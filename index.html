@@ -1,0 +1,87 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insta Reel Downloader</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./style.css" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;500;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="head">
+          <img src="./logo.png" alt="instagram" height="40" width="40" />
+          <h1>Insta Reel Downloader</h1>
+        </div>
+        <form id="fetchForm">
+          <input
+            type="text"
+            name="url"
+            id="url"
+            placeholder="Enter URL"
+            required
+          />
+          <button type="submit" id="submit-button">Submit</button>
+        </form>
+        <form id="fetchJson">
+          <textarea
+            name="json"
+            id="json"
+            placeholder="Enter JSON text"
+            required
+          ></textarea>
+          <button type="submit" id="submit-button">Submit</button>
+        </form>
+        <div class="error"></div>
+        <div class="video" style="display: none">
+          <video id="video" controls>
+            <source src="" id="source" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    $("#fetchForm").on("submit", function (event) {
+      event.preventDefault();
+      $(".error").text("");
+      // $("button").text("Loading...");
+
+      const url = $("#url").val();
+
+      const urlArray = url.split("/?");
+      const newUrl = urlArray[0];
+      const finalUrl = newUrl + "?__a=1&__d=dis";
+
+      window.open(finalUrl, "_blank");
+      this.reset();
+    });
+
+    $("#fetchJson").on("submit", function (event) {
+      event.preventDefault();
+
+      const json = $("#json").val();
+      const result = JSON.parse(json);
+
+      const videoUrl = result.items[0].video_versions[0].url;
+
+      console.log(videoUrl);
+      $("#source").attr("src", videoUrl);
+      $(".video").css("display", "flex");
+
+      $("#video")[0].load();
+      this.reset();
+    });
+  </script>
+</html>
